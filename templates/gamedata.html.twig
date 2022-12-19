@@ -1,0 +1,177 @@
+<a href="#" id="scroll-to-top">
+	<img src="/{{ path }}/src/img/up-arrow-icon.svg">
+</a>
+
+{% include '@darts/menu.html.twig' %}
+
+<div id="day-selector">
+	{% for day in day_selector %}
+		<div><a href="/darts/game/gamedata?d={{ day }}">{{ day }}</a></div>
+	{% endfor %}
+</div>
+
+
+
+
+<div id="data-page-wrapper">
+
+{% if games is not empty %}
+
+<h1>{{ date }}</h1>
+<h2>{{ matrix.title }}</h2>
+
+
+
+
+
+<div id="tree-wrapper">
+<div id="tree">
+{% for key, level in tree %}
+	<div class="level level-{{ key }}">
+	{% for keyy, game in level %}
+		<a href="#game-{{ game.gameid }}">
+		<div class="game game-{{ keyy }}" data-gameid="{{ game.gameid }}" data-parent="{{ game.parent }}">
+		
+		<div class="winner">{{ game.winner.name }} ({{ game.result }})</div>
+		{% for player in game.players %}
+			<div class="player">{{ player.name }}</div>
+		{% endfor %}
+		<div class="rope"><img src="/{{ path }}/src/img/diagonal.png"></div>
+		</div>
+		</a>
+	{% endfor %}
+	</div>
+{% endfor %}
+</div>
+</div>
+
+
+{# matrix of games. #}
+
+{% for block in matrix.gamesRebuild %}
+
+<div class="matrix">
+
+	<div id="header">
+	<div class="wutt"></div>
+	{% for player in block %}
+		<div class="wutt matrix-label">{{ player|first.player.name }}</div>
+	{% endfor %}
+	</div>
+
+
+	{% set i = 0 %}
+	{% for player in block %}
+
+
+		{% set i = i + 1 %}
+		{% set lastrow = loop.last %}
+		<div class="wut">
+		<div class="wutt matrix-label">{{ player|first.player.name }}</div>
+		{% set ii = 0 %}
+		{% for row in player %}
+			{% set ii = ii + 1 %}
+
+			{% if (i == ii) %}
+				<div class="wutt placeholder"></div>
+			{% endif %}
+
+			<div class="wutt" data-gameid="{{ row.gameid }}">
+			{{ row.result }} ({{ row.gameid }})
+			</div>
+
+			{% if lastrow and loop.last %}
+				<div class="wutt placeholder"></div>
+			{% endif %}
+		{% endfor %}
+
+
+		</div>
+
+	{% endfor %}
+</div>
+
+{% endfor %}
+
+{# matrix of games. #}
+
+
+
+
+<h2>Highlights of the day</h2>
+
+<div class="highlights">
+	<div class="highlight"><label>Top scores</label>
+
+	{% for row in highlights %}
+		<div class="highlight-data""><a href="#game-{{ row.gameid }}" data-throwid="{{ row.id }}">{{ row.player.name }}</span> - <span>{{ row.score }}</a></div>
+	{% endfor %}
+	</div>
+
+	<div class="highlight"><label>Best checkouts</label>
+
+	{% for row in checkouts %}
+		<div class="highlight-data"><a href="#game-{{ row.gameid }}" data-throwid="{{ row.id }}">{{ row.player.name }}</span> - <span>{{ row.score }}</a></div>
+	{% endfor %}
+	</div>
+
+	<div class="highlight"><label>Best first nine dart</label>
+		{% for row in firstnines %}
+		<div class="highlight-data"><a href="#game-{{ row.gameid }}" data-throwid="{{ row.first_throw_id }}">{{ row.player.name }}</span> - <span>{{ row.score }}</a></div>
+		{% endfor %}
+	</div>
+</div>
+
+{% for game in games %}
+<div class="game {{ game.metadata }}" id="game-{{ game.gameid }}">
+<div class="game-header h2"><label>Game:</label> {{ game.start | date('Y-m-d H:i')}} ({{ game.gameid }})</div>
+
+
+<div class="players h2"><label>Players:</label>
+	<span class="players">
+	{% for player in game.players %}
+		<span class="player">{{ player.name }}</span>
+	{% endfor %}
+	</span>
+</div>
+
+
+
+<div class="h2"><label>Winner:</label> {{ game.winner.name}} ({{ game.result }})</div>
+
+<div class="legs">
+{% for leg in game.legs %}
+	<div class="leg">
+		
+		<div class="winner"> Winner: {{ leg.winner.name }} (rounds: {% set rounds = leg.throws|length / 2 %} {{ rounds|round(0, 'ceil')  }})</div>
+		<div class="leg-header">
+			<div class="player"> {{ leg.firstPlayer.name }} <br />({{ leg.firstPlayerAvg|number_format(2) }})</div>
+			<div class="player"> {{ leg.secondPlayer.name }} <br />({{ leg.secondPlayerAvg|number_format(2) }})</div>
+		</div>
+
+		<div class="throws">
+			
+		{% for throw in leg.throws %}
+			{% set class = '' %}
+			{% if throw.remain  < 100 %}
+				{% set class = 'under100' %}
+			{% endif %}
+			{% if throw.remain  == 0 %}
+				{% set class = 'checkout' %}
+			{% endif %}
+			<div class="throw {{ class }}" data-id="{{ throw.id }}" id="throw-{{ throw.id }}"> 
+				
+				<span class="score">{{ throw.score }}</span> 
+				<span class="remain">({{ throw.remain }})</span>
+			</div>
+		{% endfor %}
+		</div>
+	</div>
+
+{% endfor %}
+</div>
+</div>
+{% endfor %}
+
+{% endif %}
+</div>

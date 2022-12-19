@@ -1,0 +1,21 @@
+{% include '@darts/menu.html.twig' %}
+
+{% for stat in stats %}
+	<div class="stat-row">	
+		<div class="stat-icon"></div>
+		<div class="stat-data">
+			<div class="stat-label"><h2>{{ stat['label'] }}</h2></div>
+
+			{% for row in stat['stat'] %}
+				<div class="stat-data-cells">
+					{% if row['created'] is not empty %}
+						<span>{{ row['created'] | date('Y-m-d') }}</span>
+					{% endif %}
+					<span><strong>{{ row['player'] }}</strong></span>
+					<span>{{ row['value'] }} {{ row['suffix'] }}</span>
+					<span>{{ row['point'] }}</span>
+				</div>
+			{% endfor%}	
+		</div>
+	</div>
+{% endfor%}

@@ -1,0 +1,17 @@
+#edit-players {
+	display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.cell {
+	border:  1px solid #ccc;
+	padding:  6px;
+	width:  150px;
+}
+.header-x, .row {
+	display:  flex;
+}
+
+.brick {
+	background: #aaa;
+}

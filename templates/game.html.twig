@@ -1,0 +1,127 @@
+<pre id="dev-log"></pre>
+
+<div id="players">
+	<div class="players-left">
+		<div id="player-a" class="player-selector"><label>Player A: </label>
+			{{ player_selector_a|raw }}
+		</div>
+
+		<div id="player-b" class="player-selector"><label>Player B: </label>
+			{{ player_selector_b|raw }}
+		</div>
+	</div>
+	<div class="players-right">
+		<div class="change-starter-player"><img src="/{{ path }}/src/img/change.svg"></div>
+	</div>
+</div>
+
+<div id="leg-set">
+	<label>Nyert legek</label>
+	<select>
+	<option>2</option>
+	<option>3</option>
+	<option>4</option>
+	<option>5</option>
+	<option>6</option>
+	<option>7</option>
+	<option>8</option>
+	<option>9</option>
+	<option>10</option>
+	</select>
+</div>
+
+<div id="player-stats">
+	<div id="player-a-status" class="player">
+		<div class="player-data">
+			<span class="name"></span>
+			<span class="points"></span>
+		</div>
+		<div class="throw-data">
+			<span class="stat-label">won leg:</span><span class="won-leg">0</span>
+			<span class="stat-label">avg:</span><span class="avg"></span>
+		</div>
+	</div>
+	
+	<div id="player-b-status" class="player">
+		<div class="player-data">
+			<span class="name"></span>
+			<span class="points"></span>
+		</div>
+		<div class="throw-data">
+			<span class="stat-label">won leg:</span><span class="won-leg">0</span>
+			<span class="stat-label">avg:</span><span class="avg"></span>
+		</div>
+		
+	</div>
+</div>
+
+<div id="defaults">
+	<div><input type="button" value="start" id="start"></div>
+</div>
+<div id="main"  style="display: none;">
+<div id="score">0</div>
+<div id="dashboard">
+	<div style="display: none;">
+		<div id="leg">leg: <span class="count"></span> | score: <span id="legscore"></span></div>
+	</div>
+	
+	<div class="input" id="current"> </div> 
+
+	<div id="numpad">
+		<div class="numpad-row">
+			{# <div class="button"><span>501</span></div> #}
+			<div class="button predefined-score"><span>26</span></div>
+			<div class="button button-1"><span>1</span></div>
+			<div class="button button-2"><span>2</span></div>
+			<div class="button button-3"><span>3</span></div>
+			<div class="button predefined-score"><span>60</span></div>
+		</div>
+
+		<div class="numpad-row">
+			<div class="button predefined-score"><span>41</span></div>
+			<div class="button button-4"><span>4</span></div>
+			<div class="button button-5"><span>5</span></div>
+			<div class="button button-6"><span>6</span></div>
+			<div class="button predefined-score"><span>85</span></div>
+		</div>
+
+		<div class="numpad-row">
+			<div class="button predefined-score"><span>45</span></div>
+			<div class="button button-7"><span>7</span></div>
+			<div class="button button-8"><span>8</span></div>
+			<div class="button button-9"><span>9</span></div>
+			<div class="button predefined-score"><span>100</span></div>
+		</div>
+
+		<div class="numpad-row c4">
+			<div class="button function undo"><span></span></div>
+			<div class="button function clear"><span></span></div>
+			<div class="button button-0"><span>0</span></div>
+			<div class="button function send" id="send"><span>send</span></div>
+		</div>
+	</div>
+</div>
+</div>
+<div id="log">
+	<div class="log-row">
+		<div class="round-score">###round-score###</div>
+		<div class="round-sum">###round-sum###</div>
+		<div class="round-stat">
+			<div class="bar" ###bar-length###></div>
+		</div>
+	</div>
+
+</div>
+
+<div id="finale">
+	{% include '@darts/menu.html.twig' %}
+	<div id="winner"></div>
+</div>
+
+<div id="dev">
+	<div id="delete-cookies" style="display: none;">New game</div>
+	{% if drawid != 0 %}
+	<div id="scoreboard" style="display: none;"><a href="/darts/drawtable/{{ drawid }}">Scoreboard</a></div>
+	{% endif %}
+</div>
+

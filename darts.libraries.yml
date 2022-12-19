@@ -1,0 +1,105 @@
+# Custom module library for general purposes.
+counter:
+  js:
+    src/js/counter.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/counter.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+chart:
+  js:
+    src/js/chart.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/chart.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+where:
+  js:
+    src/js/where.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/where.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+game:
+  js:
+    src/js/gameTest.js: {weight: 0}
+    src/js/gamexx.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/game.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+generalstat:
+  js:
+    src/js/generalstat.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/generalstat.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+gamedata:
+  js:
+    src/js/gamedata.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/gamedata.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+gamedraw:
+  js:
+    src/js/gamedraw.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/gamedraw.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+gamedrawtable:
+  js:
+    src/js/gamedrawtable.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/gamedraw.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie

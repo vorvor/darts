@@ -1,0 +1,51 @@
+body .messages {
+	display:  none;
+}
+
+body.user-logged-in .messages {
+	display: block;
+}
+
+header {
+	width:  200px;
+	margin: 0 auto;
+	color:  #fff;
+}
+
+header img {
+	max-width: 100%;
+}
+
+#menu {
+	text-align: center;
+	font-size: 24px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+#menu a {
+	background: orange;
+	border-radius: 4px;
+	width:  fit-content;
+	padding: 10px 20px;
+	color:  #fff;
+	text-decoration: none;
+	display: block;
+	margin: 10px;
+}
+
+.page-title {
+	display: none;
+}
+
+#start {
+	margin:  24px 0;
+	font-size:  24px;
+	background-color:  green;
+	color:  #fff;
+	border-radius: 4px;
+	height:  60px;
+	text-transform: uppercase;
+	border:  none;
+}

@@ -1,0 +1,88 @@
+
+
+header {
+	text-align: center;
+}
+
+header img {
+	width:  200px;
+}
+
+#player {
+	font-size: 30px;
+}
+
+.player-wrapper {
+	display:  none;
+}
+
+.stat-card {
+	border:  1px solid #ccc;
+	border-radius: 4px;
+	box-shadow: 0px 0px 10px #aaa;
+	padding: 22px 30px;
+	margin: 14px;
+	width: fit-content;
+}
+
+.player {
+	font-size: 30px;
+}
+
+.game-stat {
+	display: flex;
+	align-items: flex-end;
+}
+
+.stat-bar {
+	text-align: center;
+	width:  14px;
+}
+
+.bar {
+	width:  5px;
+	background-color: red;
+	margin: 0 auto;
+}
+
+.bar-green {
+	width:  5px;
+	background-color: green;
+}
+
+.int {
+	transform: rotate(-90deg);
+	margin-top:  12px;
+}
+
+.delay {
+	transform: rotate(-90deg);
+	margin: 19px 0px 0px 0px;
+}
+
+.stat-per-day {
+	font-size:  22px;
+	margin:  10px 0;
+}
+
+#scrolltotop {
+	background-color: orange;
+	border-radius:  100px;
+	padding:  20px;
+	width:  30px;
+	height:  30px;
+	color:  #fff;
+	font-size:  40px;
+	position: fixed;
+	right:  20px;
+	bottom:  20px;
+}
+
+#scrolltotop::after {
+	content:  "";
+	width:  30px;
+	height:  30px;
+	display:  block;
+	background-image:  url(../img/arrow-up.svg);
+	background-size: 30px;
+}

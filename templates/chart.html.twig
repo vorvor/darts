@@ -1,0 +1,59 @@
+{% include '@darts/menu.html.twig' %}
+
+<h1>STATISTICS</h1>
+<select id="player">
+	<option value="0">Select player</option>
+
+{#{% for uid, player in players %}
+<option value="{{ uid }}">{{ player }}</div>
+{% endfor %} #}
+
+</select>
+
+{% for uid,user in scoreboard %}
+
+	<div id="player-{{uid}}" class="player-wrapper" data-name="{{ user.name }}" data-uid="{{ uid }}">
+
+	{# <div class="player">{{ user.name  }}</div> #}
+	{% for day,stat in stats[uid] %}
+				<div class="stat-per-day" data-day="{{ day }}">{{day}}: {{stat}}</div>
+				{% endfor %}
+
+	{% for key,game in user %}
+
+		{% if key matches '/^\\d+$/' %}
+
+		<div class="stat-card day-{{ game.day }}">
+			<div class="stat-header">
+				<div>avg. {{ game.sum }} - {{ game.sumtime }}sec</div>
+				<div><strong>{{ game.from }}</strong> - {{ game.to }} ({{ game.time }}min)</div>
+				<div></div>
+
+			</div>
+			<div class="game-stat">
+
+			{% for score in game.score %}
+
+				<div class="stat-bar">
+					{% set color = 'red' %}
+					{% if score.point > 60 %}
+						{%  set color = 'orange' %}
+					{% endif %}
+					{% if score.point > 90 %}
+						{%  set color = 'green' %}
+					{% endif %}
+					<div class="bar" style="height:{{ score.point }}px;background-color:{{color}}"></div>
+					{# <div class="bar-green" style="height:{{ score.created }}px;">{{ score.created }}</div> #}
+					<div class="int">{{ score.point }}</div>
+					<div class="delay">{{ score.diff }}</div>
+				</div>
+
+			{% endfor %}
+			</div>
+			</div>
+		{% endif %}
+	{% endfor %}
+
+	</div>
+{% endfor %}
+<div id="scrolltotop"></div>

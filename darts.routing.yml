@@ -1,0 +1,177 @@
+darts.example:
+  path: '/darts'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::build'
+  requirements:
+    _permission: 'access content'
+
+darts.write:
+  path: '/darts/write/{name}/{data}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::write'
+  requirements:
+    _permission: 'access content'
+
+darts.writedb:
+  path: '/darts/writedb/{uid}/{gameid}/{score}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::writedb'
+  requirements:
+    _permission: 'access content'
+
+darts.deletedb:
+  path: '/darts/deletedb/{id}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::deletedb'
+  requirements:
+    _permission: 'access content'
+
+darts.getgameid:
+  path: '/darts/getgameid/{uid}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::get_last_gameid'
+  requirements:
+    _permission: 'access content'
+
+darts.testwhere:
+  path: '/darts/where'
+  defaults:
+    _title: 'Where'
+    _controller: '\Drupal\darts\Controller\DartsController::where'
+  requirements:
+    _permission: 'access content'
+
+darts.getuserid:
+  path: '/darts/currentuser'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::get_current_user'
+  requirements:
+    _permission: 'access content'
+
+darts.userstat:
+  path: '/darts/stat/{uid}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::get_stats'
+  requirements:
+    _permission: 'access content'
+
+darts.usergenstat:
+  path: '/darts/generalstat'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::get_general_stats'
+  requirements:
+    _permission: 'access content'
+
+darts.stats:
+  path: '/darts/stats'
+  defaults:
+    _title: 'Base'
+    _form: 'Drupal\darts\Form\baseForm'
+  requirements:
+    _permission: 'access content'
+
+darts.game:
+  path: '/darts/game'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::game'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+
+darts.gamelastid:
+  path: '/darts/game/lastgameid'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::game_last_id'
+  requirements:
+    _permission: 'access content'
+
+
+darts.gamewritedb:
+  path: '/darts/game/writedb/{uid}/{gameid}/{score}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::writedbgame'
+  requirements:
+    _permission: 'access content'
+
+darts.gamedata:
+  path: '/darts/game/gamedata'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::gameData'
+  requirements:
+    _permission: 'access content'
+
+darts.deletelastscore:
+  path: '/darts/deletelastscore/{gameid}'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::deleteLastScore'
+  requirements:
+    _permission: 'access content'
+
+
+darts.draw:
+  path: '/darts/game/draw'
+  defaults:
+    _title: 'Example'
+    _controller: '\Drupal\darts\Controller\DartsController::gameDraw'
+  requirements:
+    _permission: 'access content'
+
+darts.drawform:
+  path: '/darts/drawform'
+  defaults:
+    _title: 'Draw'
+    _form: 'Drupal\darts\Form\drawForm'
+  requirements:
+    _permission: 'access content'
+
+darts.drawtable:
+  path: '/darts/drawtable/{did}'
+  defaults:
+    _title: 'Draw'
+    _controller: '\Drupal\darts\Controller\DartsController::drawTable'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+
+darts.drawtableaddplayer:
+  path: '/darts/drawtable/addplayer/{did}/{team}/{uid}'
+  defaults:
+    _title: 'Draw'
+    _controller: '\Drupal\darts\Controller\DartsController::drawTableAddPlayer'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+
+darts.drawtableremoveplayer:
+  path: '/darts/drawtable/removeplayer/{did}/{team}/{uid}'
+  defaults:
+    _title: 'Draw'
+    _controller: '\Drupal\darts\Controller\DartsController::drawTableRemovePlayer'
+  requirements:
+    _permission: 'access content'
+  options:
+    no_cache: 'TRUE'
+
+darts.settings_form:
+  path: '/admin/config/system/darts'
+  defaults:
+    _title: 'darts settings'
+    _form: 'Drupal\darts\Form\SettingsForm'
+  requirements:
+    _permission: 'administer darts configuration'

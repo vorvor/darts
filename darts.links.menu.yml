@@ -1,0 +1,6 @@
+darts.settings_form:
+  title: darts
+  description: Configure darts.
+  parent: system.admin_config_system
+  route_name: darts.settings_form
+  weight: 10

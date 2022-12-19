@@ -1,0 +1,745 @@
+<?php
+
+use Drupal\darts\Game;
+
+/**
+ * @file
+ * Primary module hooks for darts module.
+ *
+ * @DCG
+ * This file is no longer required in Drupal 8.
+ * @see https://www.drupal.org/node/2217931
+ */
+
+/**
+ * Implements hook_theme().
+ * 
+ * Register a module or theme's theme implementations.
+ * The implementations declared by this hook specify how a particular render array is to be rendered as HTML.
+ * 
+ * See: https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21theme.api.php/function/hook_theme/8.2.x
+ * 
+ * If you change this method, clear theme registry and routing table 'drush cc theme-registry' and 'drush cc router'.
+ */
+function darts_theme($existing, $type, $theme, $path) {
+
+  return [      
+    'counter' => [
+      'render element' => 'children',
+      'template' => 'counter',
+      'variables' => [
+        'player_selector' => null,
+      ],
+    ],
+    'chart' => [
+      'render element' => 'children',
+      'template' => 'chart',
+      'variables' => [
+        'scoreboard' => null,
+        'stats' => null,
+        'date_from' => null,
+        'date_to' => null,
+        'players' => null,
+      ],
+    ],
+    'generalstat' => [
+      'render element' => 'children',
+      'template' => 'generalstat',
+      'variables' => [
+        'stats' => null,
+      ],
+    ],
+    'where' => [
+      'render element' => 'children',
+      'template' => 'where',
+      'variables' => [
+        'path' => null,
+      ],
+    ],
+    'game' => [
+      'render element' => 'children',
+      'template' => 'game',
+      'variables' => [
+        'player_selector_a' => null,
+        'player_selector_b' => null,
+        'drawid' => 0,
+        'path' => null,
+      ],
+    ],
+    'gamedata' => [
+      'render element' => 'children',
+      'template' => 'gamedata',
+      'variables' => [
+        'path' => null,
+        'day_selector' => null,
+        'date' => null,
+        'games' => null,
+        'firstnines' => null,
+        'highlights' => null,
+        'checkouts' => null,
+        'matrix' => null,
+        'tree' => null,
+      ],
+    ],
+    'gamedraw' => [
+      'render element' => 'children',
+      'template' => 'gamedraw',
+      'variables' => [
+        'teams' => null,
+        'matchstatuses' => null,
+        'allplayers' => null,
+        'drawid' => null,
+      ],
+    ],
+  ];
+}
+
+function darts_get_last_gameid($uid) {
+    $database = \Drupal::database();
+    $query = $database->select('darts', 'd');
+    $query
+    ->fields('d', array('gameid'))
+    ->condition('d.uid', $uid)
+    ->orderBy('d.gameid', 'DESC')
+    ->range(0, 1);
+
+    $results = $query->execute()->fetchAll();
+
+    return $results;
+}
+
+function darts_write_score($uid, $gameid, $score) {
+    $database = \Drupal::database();
+    $result = $database->insert('darts')
+      ->fields([
+        'uid' => $uid,
+        'gameid' => $gameid,
+        'score' => $score,
+        'created' => \Drupal::time()->getRequestTime(),
+      ])
+    ->execute();
+
+    return $result;
+}
+
+function darts_delete_score($id) {
+
+    // TODO: for security reasons
+    // delete only if record is not older than 30min
+    // its not realistic for delete records in the past as its a function for undo
+
+    $database = \Drupal::database();
+
+    $database->delete('darts')
+      ->condition('id', $id)
+      ->execute();
+}
+
+function darts_delete_last_score_of_game($gameid) {
+
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'd');
+    $query
+    ->fields('d', [])
+    ->condition('d.gameid', $gameid)
+    ->orderBy('d.id', 'DESC')
+    ->range(0, 1);
+
+    $results = $query->execute()->fetchAll();
+
+    $lastid = $results[0]->id;
+
+    
+    $database = \Drupal::database();
+
+    $database->delete('darts_game')
+      ->condition('id', $lastid)
+      ->execute();
+    
+}
+
+function darts_get_game($uid, $gameid) {
+    $database = \Drupal::database();
+    $query = $database->select('darts', 'd');
+    $query
+    ->fields('d', array('gameid'))
+    ->condition('d.uid', $uid);
+
+    $results = $query->execute()->fetchAll();
+
+    return $results;
+}
+
+function darts_get_players() {
+
+    $players = [
+      2 => "Dióbél Ádám",
+      3 => "Földi András",
+      4 => "Fury Bally",
+      5 => "Balogh Sándor",
+      6 => "Barna Kss",
+      7 => "Nyitrai Bence",
+      8 => "Endrei Dávid",
+      9 => "Szivos Attila",
+      10 => "Gáspár Bálint",
+      11 => "Czakó Gergely",
+      12 => "Takács Gergő",
+      13 => "Horváth Géza",
+      14 => "Holló Szabó Zsófi",
+      15 => "Szeles Imre",
+      16 => "Holló Szabó Lajos",
+      17 => "Pál Levente",
+      18 => "Man Hani",
+      19 => "Margaritovics Márkó",
+      20 => "Tóth Norbert",
+      21 => "Varga Jimbo Norbert",
+      22 => "Földi Péter",
+      23 => "Illés László",
+      24 => "Kaltner Richárd",
+      25 => "Rio Róka",
+      26 => "Petrovity Sándor",
+      27 => "Peter Soma",
+      28 => "Pelle Tamas",
+      29 => "Varga Dudás István",
+      30 => "Vörös Borisz",
+      31 => "Török Gergő",
+      ];
+
+      return $players;
+}
+
+function darts_player_already_there($array, $player) {
+    foreach ($array as $val) {
+        if ($val['player'] == $player) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function darts_stats_180() {
+    $players = darts_get_players();
+
+    $database = \Drupal::database();
+    $query = $database->select('darts', 'd');
+    $query
+    ->fields('d')
+    ->orderBy('d.uid', 'DESC')
+    ->orderBy('d.gameid', 'DESC')
+    ->orderBy('d.id', 'ASC');
+
+    $results = $query->execute()->fetchAll();
+
+    $games = [];
+    foreach ($results as $row) {
+      $games[$row->uid][$row->gameid]['score'][] = [
+        'point' => $row->score,
+        'created' => $row->created,
+      ];
+
+    }
+
+    $stats = [];
+    $stat = [];
+    foreach ($games as $uuid => $game) {
+
+        if ($uuid == 0) {
+            continue;
+        }
+      
+        foreach ($game as $gameid => $onegame) {
+       
+            foreach ($onegame as $round) {
+                foreach ($round as $throw) {
+                    if ($throw['point'] == 180) {
+                        if (!isset($stat[$uuid])) {
+                            $stat[$uuid] = [
+                                'point' => '',
+                                'player' => $players[$uuid],
+                                'created' => $throw['created'],
+                            ];
+                        }
+                        if (!isset($stat[$uuid]['value'])) {
+                            $stat[$uuid]['value'] = 1;
+                        } else {
+                            $stat[$uuid]['value']++;
+                        }
+                    }
+                }
+            }
+        }
+        
+            
+        
+    }
+
+    dpm($stat);
+    usort($stat, function($a, $b) {
+      return $b['value'] <=> $a['value'];
+    });
+
+    $stats['180'] = [
+                'label' => 'OOOONE HUNDREEEEED AND EIGHTYEEEEEE',
+                'stat' => $stat,
+              ];
+
+    dpm($stats);
+
+    return $stats;
+}
+
+function darts_parse_game_data() {
+    $database = \Drupal::database();
+    $query = $database->select('darts', 'd');
+    $query
+    ->fields('d')
+    ->orderBy('d.uid', 'DESC')
+    ->orderBy('d.gameid', 'DESC')
+    ->orderBy('d.id', 'ASC');
+
+    $results = $query->execute()->fetchAll();
+
+    $games = [];
+    foreach ($results as $row) {
+      $games[$row->uid][$row->gameid]['score'][] = [
+        'point' => $row->score,
+        'created' => $row->created,
+      ];
+
+    }
+
+    return $games;
+}
+
+function darts_stats_best_average() {
+    $players = darts_get_players();
+
+    $games = darts_parse_game_data();
+
+    $stats = [];
+    $stat = [];
+    foreach ($games as $uuid => $game) {
+
+        if ($uuid == 0) {
+            continue;
+        }
+      
+      foreach ($game as $gameid => $onegame) {
+
+        // Find best avarage.
+        foreach ($onegame as $round) {
+
+          $i = 0;
+          $sum = 0;  
+          foreach ($round as $throw) {
+            $i++;
+            $sum += $throw['point'];
+          }
+
+          if ($i == 17) {
+              $averages[] = [
+                'point' => $sum . ' pont',
+                'value' => number_format(round($sum / $i * 100) / 100, 2, '.', ''),
+                'player' => $players[$uuid],
+                'created' => $throw['created'],
+              ];
+          }
+        }
+
+      }
+
+    }
+    
+    usort($averages, function($a, $b) {
+      return $b['value'] <=> $a['value'];
+    });
+
+    $i = 0;
+    foreach ($averages as $average) {
+
+        if (!darts_player_already_there($stat, $average['player'])) {
+            $stat[] = $average;
+
+            $i++;
+            if ($i > 9) {
+                break;
+            }
+        }
+
+    }
+
+    $stats['best_average'] = [
+        'label' => 'Legjobb átlag',
+        'stat' => $stat,
+    ];
+
+    return $stats;
+}
+
+function darts_stats_best_first9() {
+    $players = darts_get_players();
+
+    $games = darts_parse_game_data();
+
+    $stats = [];
+    $stat = [];
+    foreach ($games as $uuid => $game) {
+
+        if ($uuid == 0) {
+            continue;
+        }
+      
+      foreach ($game as $gameid => $onegame) {
+
+        // Find best avarage.
+        foreach ($onegame as $round) {
+
+          $i = 0;
+          $sum = 0;  
+          foreach ($round as $throw) {
+            $i++;
+            $sum += $throw['point'];
+            if ($i == 3) {
+                break;
+            }
+          }
+
+
+          $averages[] = [
+            'point' => $sum . ' pont',
+            'value' => number_format(round($sum / $i * 100) / 100, 2, '.', ''),
+            'player' => $players[$uuid],
+            'created' => $throw['created'],
+          ];
+        }
+
+      }
+
+    }
+    
+    usort($averages, function($a, $b) {
+      return $b['value'] <=> $a['value'];
+    });
+
+
+    $i = 0;
+    foreach ($averages as $average) {
+        
+
+        if (!darts_player_already_there($stat, $average['player'])) {
+            $stat[] = $average;
+
+            $i++;
+            if ($i > 5) {
+                break;
+            }
+        }
+
+    }
+
+    $stats['first_nine'] = [
+        'label' => 'Legjobb első 9 nyíl',
+        'stat' => $stat,
+    ];
+
+    return $stats;
+}
+
+
+function darts_stats_hard_working() {
+    $players = darts_get_players();
+
+    $games = darts_parse_game_data();
+
+    $stats = [];
+    $stat = [];
+    foreach ($games as $uuid => $game) {
+        if ($uuid == 0) {
+            continue;
+        }
+
+          $averages[] = [
+            'point' => '',
+            'value' => count($game),
+            'player' => $players[$uuid],
+            'created' => '',
+            'suffix' => 'meccs',
+          ];
+    }
+    
+    usort($averages, function($a, $b) {
+      return $b['value'] <=> $a['value'];
+    });
+
+
+    $i = 0;
+    foreach ($averages as $average) {
+      $i++;
+      if ($i > 5) {
+        break;
+      }
+
+      $stat[] = $average;
+
+      $stats['hard_worker'] = [
+        'label' => 'Iparkodók',
+        'stat' => $stat,
+      ];
+
+    }
+
+    return $stats;
+}
+
+function darts_stats_last_game_date() {
+    $players = darts_get_players();
+
+    $games = darts_parse_game_data();
+
+    $stats = [];
+    $stat = [];
+    foreach ($games as $uuid => $game) {
+        if ($uuid == 0) {
+            continue;
+        }
+
+        foreach ($game as $gameid => $onegame) {
+
+            foreach ($onegame as $round) {
+
+                foreach ($round as $throw) {
+                    if (!isset($last[$uuid])) {
+                       $last[$uuid] = [
+                            'player' => $players[$uuid],
+                            'value' => $throw['created'],
+                        ];    
+                    } else {
+                        if ($throw['created'] > $last[$uuid]['value']) {
+                            $last[$uuid] = [
+                                'player' => $players[$uuid],
+                                'value' => $throw['created'],
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    usort($last, function($a, $b) {
+
+      return $b['value'] <=> $a['value'];
+    });
+
+    foreach ($last as &$val) {
+
+        $val['value'] = date('Y-m-d', $val['value']);
+    }
+
+    $stats['last_game_date'] = [
+        'label' => 'Utolsó edzés',
+        'stat' => $last,
+      ];
+
+    return $stats;
+}
+
+function darts_get_last_game_gameid() {
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'd');
+    $query
+    ->fields('d', array('gameid'))
+    ->orderBy('d.gameid', 'DESC')
+    ->range(0, 1);
+
+    $results = $query->execute()->fetchAll();
+
+    return $results;
+}
+
+function darts_game_write_score($uid, $gameid, $score) {
+    $database = \Drupal::database();
+    $result = $database->insert('darts_game')
+      ->fields([
+        'uid' => $uid,
+        'gameid' => $gameid,
+        'score' => $score,
+        'created' => \Drupal::time()->getRequestTime(),
+      ])
+    ->execute();
+
+    return $result;
+}
+
+function darts_get_game_players($gameid) {
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'g');
+    $query
+    ->fields('g', [])
+    ->condition('g.gameid', $gameid)
+    ->orderBy('g.created', 'DESC');
+
+    $results = $query->execute()->fetchAll();
+
+    $players = [];
+    foreach ($results as $row) {
+        if (!in_array($row->uid, $players)) {
+            $players[] = $row->uid;
+
+            if (count($players) == 2) {
+                return $players;
+            }
+        }
+    }
+}
+
+function darts_get_game_players_name($uids) {
+    $players = darts_get_players();
+
+    foreach ($uids as $uid) {
+        $names[] = $players[$uid];
+    }
+
+    return $names;
+}
+
+function darts_get_game_data_former() {
+
+    $player_names = darts_get_players();
+
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'g');
+    $query
+    ->fields('g', [])
+    ->orderBy('g.gameid', 'DESC')
+    ->orderBy('g.id', 'DESC');
+
+    $results = $query->execute()->fetchAll();
+
+    $data = [];
+    $player = [];
+    $set = 1;
+    $currentgame = 0;
+    foreach ($results as $row) {
+        $date = date('Y-m-d', $row->created);
+
+        $players = darts_get_game_players($row->gameid);
+        $data[$date][$row->gameid]['players'] = darts_get_game_players_name($players);
+
+        if ($currentgame !== $row->gameid) {
+            $player = [];
+            $set = 1;
+            $data[$date][$row->gameid]['winner'] = $player_names[$row->uid];
+        }
+
+
+        
+        $data[$date][$row->gameid]['data'][$set][$row->id][$player_names[$row->uid]] = $row->score;
+        if (!isset($player[$row->uid])) {
+
+            foreach ($players as $playerid) {
+                $player[$playerid] = 501 - $row->score;
+            }
+        } else {
+            $player[$row->uid] -= $row->score;
+
+            if ($player[$row->uid] == 0) {
+                $data[$date][$row->gameid]['data'][$set]['winner'] = $player_names[$row->uid];
+                $set++;
+
+
+
+                foreach ($players as $playerid) {
+                    unset($player[$playerid]);
+                }
+            }
+        }
+
+        $currentgame = $row->gameid;
+
+
+    }
+
+    dpm($results);
+    dpm($data);
+
+    return $data;
+}
+
+function darts_get_games($day) {
+
+    if ($day == '') {
+        return [];
+    }
+
+    $from = strtotime($day . ' 00:00:01');
+    $to = strtotime($day . ' 00:00:01' . ' +1 day');
+
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'g');
+    $query
+    ->fields('g', ['gameid'])
+    ->orderBy('g.gameid', 'ASC')
+    ->condition('g.created', $from, '>')
+    ->condition('g.created', $to, '<');
+
+    $results = $query->distinct()->execute()->fetchCol();
+    //$results = [20];
+
+    foreach ($results as $gameid) {
+        $games[] = new Game($gameid);
+    }
+
+    return $games;
+}
+
+
+function darts_cmp($a, $b) {
+    return $a->score < $b->score;
+}
+
+function darts_cmp_array($a, $b) {
+    return $a['score'] < $b['score'];
+}
+
+function darts_get_gameday_highlights($games) {
+    foreach ($games as $game) {
+        foreach ($game->legs as $leg) {
+            foreach ($leg->throws as $throw) {
+                $throws[] = $throw;
+            }
+        }
+    }
+
+    usort($throws, 'darts_cmp');
+
+}
+
+function darts_list_gamedays() {
+    $database = \Drupal::database();
+    $query = $database->select('darts_game', 'g');
+    $query
+    ->fields('g', ['created']);
+
+    $results = $query->execute()->fetchAll();
+
+    $days = [];
+    foreach ($results as $row) {
+        $days[date('Y-m-d', $row->created)] = date('Y-m-d', $row->created);
+    }
+
+    return $days;
+}
+
+function game_draw_add_player($did, $team, $uid) {
+    $database = \Drupal::database();
+    $query = $database->select('darts_matrix', 'm');
+    $query
+    ->fields('m', ['data'])
+    ->condition('m.id', $id);
+
+    $results = $query->execute()->fetchAll();
+
+    $teams = unserialize($results[0]->data);
+}
