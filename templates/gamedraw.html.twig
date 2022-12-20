@@ -1,13 +1,14 @@
+<div id="draw-container" class="{{ path }}">
 {% for num, players in teams %}
 
-<div id="draw">
+<div class="draw">
 	<h2> Team {{ num + 1 }}</h2>
 
 		
 		<div class="header-x">
 			<div class="cell placeholder"></div>
 			{% for k,c in players %}
-				<div class="cell col-{{k}}">{{c}}</div>
+				<div class="cell name col-{{k}}">{{c}}</div>
 			{% endfor %}
 		</div>
 
@@ -16,7 +17,7 @@
 		{% for k,c in players %}
 			{% set i = i + 1 %}
 			<div class="row">
-				<div class="cell col-{{k}}">{{c}}</div>
+				<div class="cell name col-{{k}}">{{c}}</div>
 				{% set ii = 0 %}
 				{% for kk,cc in players %}
 					{% set ii = ii + 1 %}
@@ -61,3 +62,4 @@
 </select>
 <div class="cell function add-player" data-team="{{ num }}" data-did="{{ drawid }}">+</div>
 {% endfor %}
+</div>

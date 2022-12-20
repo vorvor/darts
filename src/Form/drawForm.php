@@ -29,7 +29,7 @@ class drawForm extends FormBase {
     $allPlayers = Player::getPlayers();
 
     $form['players'] = [
-      '#title' => 'Player',
+      '#title' => 'Players',
       '#type' => 'checkboxes',
       '#options' => $allPlayers,
     ];
@@ -41,6 +41,11 @@ class drawForm extends FormBase {
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Shuffle'),
+      '#ajax' => [
+        'callback' => '::renderShuffle',
+        'wrapper' => 'markup',
+      ],
+
     ];
 
     $form['actions']['save'] = [
@@ -87,6 +92,7 @@ class drawForm extends FormBase {
     $build['content'] = [
       '#theme' => 'gamedraw',
       '#teams' => $teams,
+      '#path' => 'form',
       '#attached' => [
         'library' => [
           'darts/gamedraw',
@@ -102,10 +108,17 @@ class drawForm extends FormBase {
     $form['matrix'] = [
       '#markup' => \Drupal::service('renderer')->renderRoot($build),
       '#weight' => 1000,
+      '#prefix' => '<div id="markup">',
+      '#suffix' => '</div>',
     ];
 
     return $form;
   }
+
+  public function renderShuffle(array $form, FormStateInterface $form_state) {
+ 
+        return $form['matrix'];
+    }
 
   /**
    * {@inheritdoc}

@@ -41,6 +41,10 @@
           this.test.push("jQuery('.button.send').trigger('click');");
         }
 
+        reload() {
+         this.test.push("location.reload;"); 
+        }
+
 
         getRow() {
           eval(this.test[this.row]);
@@ -55,6 +59,10 @@
 
             if (c > 0 && c % 10 == 0) {
               this.checkout();
+            }
+
+            if (c > 0 && c % 7 == 0) {
+              this.reload();
             }
           }
 

@@ -89,6 +89,7 @@ function darts_theme($existing, $type, $theme, $path) {
         'matchstatuses' => null,
         'allplayers' => null,
         'drawid' => null,
+        'path' => null,
       ],
     ],
   ];
@@ -687,6 +688,7 @@ function darts_get_games($day) {
     $results = $query->distinct()->execute()->fetchCol();
     //$results = [20];
 
+    $games = [];
     foreach ($results as $gameid) {
         $games[] = new Game($gameid);
     }

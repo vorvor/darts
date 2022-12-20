@@ -407,12 +407,11 @@ class DartsController extends ControllerBase {
     $results = $query->execute()->fetchAll();
 
     $playedGames = $this->getPlayedMatches(date('Y-m-d', $results[0]->date), 15, 30);
-    dpm($playedGames);
 
     $teams = unserialize($results[0]->data);
-    dpm($teams);
 
     // Check if match in progress or played.
+    $matchStatuses = [];
     foreach ($teams as $team) {
       foreach ($team as $playerAuid => $nameA) {
         foreach ($team as $playerBuid => $nameB) {
@@ -431,14 +430,13 @@ class DartsController extends ControllerBase {
       }
     }
 
-    dpm($matchStatuses);
-
     $build['content'] = [
       '#theme' => 'gamedraw',
       '#teams' => $teams,
       '#matchstatuses' => $matchStatuses,
       '#allplayers' => Player::getPlayers(),
       '#drawid' => $did,
+      '#path' => 'scoreboard',
       '#attached' => [
         'library' => [
           'darts/gamedrawtable',
@@ -451,6 +449,10 @@ class DartsController extends ControllerBase {
 
   public function getPlayedMatches($date, $playerA, $playerB) {
     $games = darts_get_games($date);
+
+    if (is_null($games)) {
+      return [];
+    }
 
     return $games;
   }

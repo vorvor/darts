@@ -1,3 +1,8 @@
+.draw {
+	width: fit-content;
+	margin:  0 0 0 15px;
+}
+
 #edit-players {
 	display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -8,10 +13,45 @@
 	padding:  6px;
 	width:  150px;
 }
+
+.cell.name {
+	background: #03348a;
+	color:  #fff;
+}
+
 .header-x, .row {
 	display:  flex;
 }
 
+.header-x .cell:nth-child(1) {
+	border: 1px solid #fff;
+}
+
 .brick {
 	background: #aaa;
+}
+
+.form-item-data {
+	display:  none;
+}
+
+#draw-container.form .cell.function {
+	display:  none;
+}
+
+#draw-container.form .cell a {
+	display: none;
+}
+
+
+
+
+@media only screen and (max-width: 600px) {
+
+#edit-players {
+	display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
 }
