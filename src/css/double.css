@@ -17,14 +17,7 @@ h1.page-title {
 	display: inline-flex;
 }
 
-#score {
-	background: green;
-	text-align: center;
-	padding: 10px 0;
-	font-size: 24px;
-	color: #fff;
-	width:  100%;
-}
+
 
 #current {
 	text-align: center;
@@ -36,7 +29,7 @@ h1.page-title {
 #player {
 	font-size: 32px;
 	text-align: center;
-	margin-bottom: 12px;
+
 }
 
 #leg {
@@ -73,7 +66,6 @@ input {
 	display:  grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	gap:  10px;
-	
 }
 
 .numpad-row.c3 {
@@ -82,6 +74,12 @@ input {
 
 .numpad-row.c4 {
 	grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.numpad-row.last {
+	display:  grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	gap:  10px;
 }
 
 .button:first-child, .button {
@@ -128,6 +126,8 @@ input {
 .button.txt {
 	width:  100px;
 }
+
+
 
 .button span {
 	position: absolute;
@@ -253,3 +253,115 @@ input {
 	background: red;
 	height: 4px;
 }
+
+.set {
+	background: green;
+	border-radius: 20px;
+	padding: 6px;
+	width: 70px;
+	height: fit-content;
+	text-align: center;
+	font-size: 24px;
+	color: #fff;
+}
+
+.button.active {
+	background: red;	
+}
+
+.multiple-button {
+	margin: 0 !important;
+	height: 60px;
+	border-radius: 4px;
+	background: #ccc;
+	position: relative;
+	font-weight: bold;
+	font-size: 24px;
+}
+
+.multiple-button span {
+	position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.multiple-button.simple {
+	background: red;
+}
+
+.multiple-button.double {
+	background: orange;
+}
+
+.multiple-button.triple {
+	background: green;
+}
+
+#score {
+	display: flex;
+	justify-content: center;
+	column-gap: 10px;
+	padding-bottom: 10px;
+}
+
+#double {
+	background: red;
+	border-radius: 20px;
+	padding: 6px;
+	width: 70px;
+	text-align: center;
+	font-size: 24px;
+	color: #fff;
+}
+
+#throws {
+	display: flex;
+	gap:  12px;
+}
+
+#throws-left {
+	display: flex;
+	gap:  12px;
+	justify-content: center;
+	padding-bottom: 10px;
+}
+
+.dot {
+	border-radius: 10px;
+	width: 20px;
+	height: 20px;
+	background: #444;
+}
+
+.dot.active {
+	background: green;
+}
+
+#tip {
+	padding: 40px;
+	position: absolute;
+	background: rgb(255,255,255,0.7);
+	width: 70vw;
+	height: 10vh;
+	border: 1px solid #ccc;
+	left: 0; 
+  	right: 0; 
+  	margin-left: auto; 
+  	margin-right: auto;
+  	top: 40vh;
+    z-index: 1000;
+    display: none;
+    gap:  24px;
+    justify-content: center;
+}
+
+#tip .set {
+	background: #aaa;
+}
+
+.numpad-row.c5 {
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+

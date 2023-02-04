@@ -1,3 +1,5 @@
+{% include '@darts/menu.html.twig' %}
+
 <pre id="dev-log"></pre>
 
 <div id="players">
@@ -102,7 +104,7 @@
 	</div>
 </div>
 </div>
-<div id="log">
+<div id="log" style="display: none;">
 	<div class="log-row">
 		<div class="round-score">###round-score###</div>
 		<div class="round-sum">###round-sum###</div>
@@ -120,8 +122,8 @@
 
 <div id="dev">
 	<div id="delete-cookies" style="display: none;">New game</div>
-	{% if drawid != 0 %}
+
 	<div id="scoreboard" style="display: none;"><a href="/darts/drawtable/{{ drawid }}">Scoreboard</a></div>
-	{% endif %}
+
 </div>
 

@@ -44,7 +44,7 @@
           $('.rope', this).css({
             'width' : width + 'px',
             'height' : height + 'px',
-            'left' : width / 2 * minus,
+            'left' : width / 2 * minus - 55,
             'top' : height / 2 * -1,
             'display' : 'block',
           });

@@ -25,6 +25,7 @@ class drawForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
 
     $form['#attached']['library'][] = 'darts/gamedraw';
+    $form['#attached']['library'][] = 'darts/menu';
 
     $allPlayers = Player::getPlayers();
 
@@ -107,9 +108,9 @@ class drawForm extends FormBase {
 
     $form['matrix'] = [
       '#markup' => \Drupal::service('renderer')->renderRoot($build),
-      '#weight' => 1000,
       '#prefix' => '<div id="markup">',
       '#suffix' => '</div>',
+      '#weight' => 1000,
     ];
 
     return $form;
@@ -132,7 +133,7 @@ class drawForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     
-   
+
     
     $this->messenger()->addStatus($this->t('done.'));
 

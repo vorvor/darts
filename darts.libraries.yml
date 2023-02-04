@@ -10,10 +10,26 @@ counter:
     - core/jquery
     - core/jquery.once
     - core/drupal
+    - core/drupalSettings
+    - core/js-cookie
+
+double:
+  js:
+    src/js/double.js: {}
+  css:
+    component:
+      src/css/style.css: {}
+      src/css/double.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/drupalSettings
     - core/js-cookie
 
 chart:
   js:
+    https://cdn.jsdelivr.net/npm/chart.js: { type: external, minified: true }
     src/js/chart.js: {}
   css:
     component:
@@ -98,6 +114,18 @@ gamedrawtable:
     component:
       src/css/style.css: {}
       src/css/gamedraw.css: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal
+    - core/js-cookie
+
+menu:
+  js:
+    src/js/menu.js: {}
+  css:
+    component:
+      src/css/style.css: {}
   dependencies:
     - core/jquery
     - core/jquery.once

@@ -12,11 +12,22 @@
 	border:  1px solid #ccc;
 	padding:  6px;
 	width:  150px;
+	text-align: center;
 }
 
 .cell.name {
 	background: #03348a;
 	color:  #fff;
+}
+
+.cell a {
+	text-decoration: none;
+	font-weight: bold;
+	color:  #f55d42;
+}
+
+.remove-player {
+	display: none;
 }
 
 .header-x, .row {

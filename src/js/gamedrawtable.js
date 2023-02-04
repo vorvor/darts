@@ -5,11 +5,7 @@
 
       $(window).once('dartsDrawTableBehavior').each(function() {
 
-        if ($('#draw-container').length > 0) {
-          $([document.documentElement, document.body]).animate({
-              scrollTop: $("#edit-submit").offset().top
-          }, 2000);
-        }
+        
 
         $('.add-player').click(function() {
           did = $(this).data('did');

@@ -1,0 +1,74 @@
+<div id="dev-log"></div>
+
+{% include '@darts/menu.html.twig' %}
+
+<div id="player"><label>Name: </label>
+{{ player_selector|raw }}
+</div>
+<div id="defaults">
+	<div><input type="button" value="start" id="start"></div>
+</div>
+<div id="tip"></div>
+<div id="main"  style="display: none;">
+
+<div id="dashboard">
+	<div id="score">
+		<div id="double">70</div>
+		<div id="throws"></div>
+	</div>
+	
+	<div id="throws-left">
+		<div class="dot dot-1"></div>
+		<div class="dot dot-2"></div>
+		<div class="dot dot-3"></div>
+	</div>
+
+	<div id="numpad">
+		<div class="numpad-row">
+			<div class="button"><span>20</span></div>
+			<div class="button"><span>19</span></div>
+			<div class="button"><span>18</span></div>
+			<div class="button"><span>17</span></div>
+			<div class="button"><span>16</span></div>
+		</div>
+
+		<div class="numpad-row">
+			<div class="button"><span>15</span></div>
+			<div class="button"><span>14</span></div>
+			<div class="button"><span>13</span></div>
+			<div class="button"><span>12</span></div>
+			<div class="button"><span>11</span></div>
+		</div>
+
+		<div class="numpad-row">
+			<div class="button"><span>10</span></div>
+			<div class="button"><span>9</span></div>
+			<div class="button"><span>8</span></div>
+			<div class="button"><span>7</span></div>
+			<div class="button"><span>6</span></div>
+		</div>
+
+		<div class="numpad-row c5">
+			<div class="button"><span>5</span></div>
+			<div class="button"><span>4</span></div>
+			<div class="button"><span>3</span></div>
+			<div class="button"><span>2</span></div>
+			<div class="button"><span>1</span></div>
+			<div class="button"><span>25</span></div>
+		</div>
+
+		<div class="numpad-row last">
+			<div class="multiple-button simple"><span>S</span></div>
+			<div class="multiple-button double"><span>D</span></div>
+			<div class="multiple-button triple"><span>T</span></div>
+		</div>
+	</div>
+</div>
+</div>
+
+<div id="log">
+
+</div>
+<div id="dev">
+	<div id="delete-cookies" style="display: none;">New game</div>
+</div>

@@ -98,7 +98,7 @@ class Game {
                     dpm($this);
                 }
 
-                if (!isset($winner[$leg->winner->uid])) {
+                if (isset($leg->winner) && !isset($winner[$leg->winner->uid])) {
                     $winner[$leg->winner->uid] = 0;
                 }
                 $winner[$leg->winner->uid]++; 

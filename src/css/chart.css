@@ -12,6 +12,40 @@ header img {
 	font-size: 30px;
 }
 
+#player option::before {
+	content:  "🚀";
+}
+
+#limits-block {
+	display: flex;
+}
+
+
+#limits {
+	margin: 20px;
+}
+
+#limits .row {
+	display: flex;
+	background: #eee;
+}
+
+#limits .label,
+#limits .value {
+	padding:  16px;
+	border:  1px solid #aaa;
+	width:  120px;
+}
+
+
+
+
+
+
+#chart-radar {
+	width:  50%;
+}
+
 .player-wrapper {
 	display:  none;
 }
@@ -85,4 +119,10 @@ header img {
 	display:  block;
 	background-image:  url(../img/arrow-up.svg);
 	background-size: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+	#js-chart {
+		height:  40vh;
+	}
 }

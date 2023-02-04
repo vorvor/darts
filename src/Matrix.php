@@ -86,11 +86,8 @@ class Matrix {
             ksort($games[$player->uid]);
         }
 
-        
-
         $this->gamesRebuild[] = $games;
 
-       
         return $this;
     }
 

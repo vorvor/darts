@@ -69,12 +69,14 @@
             });
         }
 
-        function shake(selector) {
+        function shake(selector, time = 600) {
           $(selector).addClass('shake');
               setTimeout(function() {
                 $(selector).removeClass('shake')
-              }, 600);
+              }, time);
         }
+
+      
 
         function getDate() {
           var d = new Date();
@@ -99,11 +101,17 @@
         $(window).once('dartsCounterBehavior').each(function() {
 
           // defaults.
+          var uid;
           var actRound = 1;
-          var roundLimit = 16;
+          var roundLimit = 17;
           var generalround = 1;
           var scoreboard = [];
           var gameon = 0;
+          var genAvg = drupalSettings.counter.genAvg;
+
+          // Show current point in reference general personal avg.
+          var statusWidth = $(window).innerWidth();
+          $('#gas-point-avg').width(parseInt(statusWidth * 0.5));
 
           // init.
           if (Cookies.get('gameon') == undefined || Cookies.get('gameon') == 0) {
@@ -113,10 +121,12 @@
             $('#defaults').hide();
             $('#main').show();
             $('#delete-cookies').show();
+            $('#dev').hide();
           }
 
           if (Cookies.get('uid') !== undefined) {
             $('select#players').val(Cookies.get('uid'));
+            uid = Cookies.get('uid');
           }
 
           if (Cookies.get('scoreboard') !== undefined) {
@@ -141,7 +151,6 @@
           
 
           if (Cookies.get('generalround') !== undefined) {
-            console.log('wut??');
             generalround = Cookies.get('generalround') * 1;
             $('#general-round').html('round: ' 
               + generalround);
@@ -150,10 +159,8 @@
           // get player name.
           $("#start").click(function() {
 
-
-
             var player = $('#player select option:selected').text();
-            var uid = $('#player select option:selected').val();
+            uid = $('#player select option:selected').val();
 
             if (uid == 0) {
               shake('#player');
@@ -191,6 +198,24 @@
             }
 
           })
+
+          // NUM BUTTON keyboard
+          $(document).keyup(function(e) {
+            if (['0','1','2','3','4','5','6','7','8','9'].includes(String.fromCharCode(e.which))) {
+              $('#current').append(String.fromCharCode(e.which));
+            }
+            if (e.key == 'Backspace') {
+              $('#current').html($('#current').html().slice(0, -1));
+            }
+            if (e.key == 'Enter') {
+              $('.button.send').click();
+            }
+            if (String.fromCharCode(e.which) == 'À') {
+              $('#current').append('0');
+            }
+
+            console.log(String.fromCharCode(e.which));
+          });
 
           // clear button.
           $('.button.clear').click(function() {
@@ -255,12 +280,19 @@
             logrow = logrow.replace('###round-score###', current);
             logrow = logrow.replace('###round-sum###', score);
 
-            if (current < 50) {
-              style = 'width: ' + current + 'px; background: red;'
-            } else if (current < 70) {
-              style = 'width: ' + current + 'px; background: orange;'
-            } else {
-              style = 'width: ' + current + 'px; background: green;'
+            if (current < 30) {
+              // red
+              style = 'width: ' + current + 'px; background: #ff0000;'
+            } else if (current < 48) {
+              // orange
+              style = 'width: ' + current + 'px; background: #fa9200;'
+            } else if (current < 60) {
+              // blue
+              style = 'width: ' + current + 'px; background: #006bd6;'
+            }
+            else {
+              // green
+              style = 'width: ' + current + 'px; background: #389800;'
             }
 
             logrow = logrow.replace('###bar-length###', 'style="' + style + '"');
@@ -271,9 +303,12 @@
 
             generalround++;
             Cookies.set('generalround', generalround);
-            
-            updateStatusBar(generalround + ' / ' + (roundLimit), (generalround - 1) * 3, (Math.round(score / (generalround - 1) * 100)) / 100, current);
 
+            currentAvg = (Math.round(score / (generalround - 1) * 100)) / 100;
+            
+            updateStatusBar(generalround + ' / ' + (roundLimit), (generalround - 1) * 3, currentAvg, current);
+
+            $('#gas-point-current').css('left', parseInt((statusWidth * 0.5) * (currentAvg / genAvg[uid])) + 'px');
             
 
             // How many legs.
@@ -293,11 +328,14 @@
               $('#dashboard').hide();
               $('#log').show();
               $('#delete-cookies').show();
+              $('#dev').show();
               Cookies.remove('generalround');
               Cookies.remove('gameon');
               Cookies.remove('score');
               Cookies.remove('scoreboard');
             }
+
+            shake('#score', 100);
 
           })
 

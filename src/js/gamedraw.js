@@ -7,17 +7,7 @@
 
 
 
-        console.log('heyyo!');
-        if ($('#draw-container').length > 0) {
-          console.log('hopp' + $("#edit-submit").offset().top);
-
-
-            $('body').animate({
-              scrollTop: $("#edit-submit").offset().top
-          }, 1000);  
-
-          
-        }
+       
 
         })
     },

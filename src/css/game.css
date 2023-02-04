@@ -1,4 +1,4 @@
-/* html, body {margin: 0; height: 100%; overflow: hidden} */
+html, body {margin: 0; height: 100%; overflow: hidden}
 
 header {
 	display: none !important;
@@ -53,8 +53,8 @@ select {
 	color:  #000 !important;
 }
 
-#players {
-
+#players select {
+	background: #fff;
 }
 
 .change-starter-player {
@@ -198,6 +198,7 @@ input {
     background-repeat: no-repeat;
     background-position: 50%;
     background-size: 30px;
+    text-indent:  -9999px;
 }
 
 .button.txt {

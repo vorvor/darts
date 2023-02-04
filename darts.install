@@ -132,3 +132,50 @@ function darts_update_9000() {
  $schema = Database::getConnection()->schema();
  $schema->createTable('darts_game', $spec);
 }
+
+function darts_update_9001() {
+
+  $spec = [
+    'description' => 'Players list.',
+    'fields' => [
+      'id' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique record ID.',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'User id.',
+      ],
+      'name' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Some data.',
+      ],
+      'data' => [
+        'type' => 'varchar_ascii',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Some data.',
+      ],
+      'created' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Timestamp when the record was created.',
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'uid' => ['uid'],
+    ],
+  ]; 
+ $schema = Database::getConnection()->schema();
+ $schema->createTable('darts_players', $spec);
+}

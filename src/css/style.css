@@ -1,3 +1,15 @@
+.blur {
+	width:  100%;
+	height:  300%;
+	display:  block;
+	position: absolute;
+	left:  0;
+	top:  0;
+	background: rgba(255, 255, 255, 0.7);
+	backdrop-filter: blur(6px);
+	z-index: 700;
+}
+
 body .messages {
 	display:  none;
 }
@@ -22,6 +34,8 @@ header img {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	position: relative;
+	z-index: 700;
 }
 
 #menu a {
@@ -33,6 +47,28 @@ header img {
 	text-decoration: none;
 	display: block;
 	margin: 10px;
+}
+
+
+#menu .sub-menu {
+
+}
+
+#menu .menu-label {
+	background: #325aa8;
+    border-radius: 4px;
+    width: fit-content;
+    padding: 10px 20px;
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    margin: 10px;
+    cursor: pointer;
+}
+
+
+#menu .sub-menu {
+	position: absolute;
 }
 
 .page-title {
@@ -48,4 +84,11 @@ header img {
 	height:  60px;
 	text-transform: uppercase;
 	border:  none;
+}
+
+
+@media only screen and (max-width: 600px) {
+	#menu {
+
+	}
 }

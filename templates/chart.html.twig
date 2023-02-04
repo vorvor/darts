@@ -4,21 +4,61 @@
 <select id="player">
 	<option value="0">Select player</option>
 
-{#{% for uid, player in players %}
+{#{% for uid, player in players|asort %}
 <option value="{{ uid }}">{{ player }}</div>
 {% endfor %} #}
 
 </select>
+
+<div id="js-chart">
+	<canvas id="canvas"></canvas>
+</div>
+
+<div id="limits-block">
+	<div id="chart-radar">
+		<canvas id="canvas2" width="200"></canvas>
+	</div>
+	<div id="limits">
+	</div>
+</div>
 
 {% for uid,user in scoreboard %}
 
 	<div id="player-{{uid}}" class="player-wrapper" data-name="{{ user.name }}" data-uid="{{ uid }}">
 
 	{# <div class="player">{{ user.name  }}</div> #}
-	{% for day,stat in stats[uid] %}
-				<div class="stat-per-day" data-day="{{ day }}">{{day}}: {{stat}}</div>
+
+	{#
+	<div class="blue">
+	<svg viewBox="0 0 2000 100" class="chart">
+  
+		 <polyline
+		     fill="none"
+		     stroke="#0074d9"
+		     stroke-width="1"
+		     points="
+		       
+		       	{% set i = 0 %}
+		       	{% for day,stat in stats[uid] %}
+					{{ i }},{{ stat }}
+					{% set i = i + 5 %}
 				{% endfor %}
 
+
+		     "
+		/>
+  
+	</svg>
+	</div>
+	#}	
+
+
+
+	{% for day,stat in stats[uid] %}
+		<div class="stat-per-day" data-day="{{ day }}">{{day}}: {{stat}}</div>
+	{% endfor %}
+
+	
 	{% for key,game in user %}
 
 		{% if key matches '/^\\d+$/' %}
@@ -35,13 +75,20 @@
 			{% for score in game.score %}
 
 				<div class="stat-bar">
-					{% set color = 'red' %}
-					{% if score.point > 60 %}
-						{%  set color = 'orange' %}
+					{# red #}
+					{% set color = '#ff0000' %}
+					{% if score.point > 59 %}
+						{# green #}
+						{%  set color = '#389800' %}
+					{% elseif score.point > 47 %}
+						{# blue #}
+						{%  set color = '#006bd6' %}
+					{% elseif score.point > 29 %}
+						{# orange #}
+						{%  set color = '#fa9200' %}
 					{% endif %}
-					{% if score.point > 90 %}
-						{%  set color = 'green' %}
-					{% endif %}
+
+
 					<div class="bar" style="height:{{ score.point }}px;background-color:{{color}}"></div>
 					{# <div class="bar-green" style="height:{{ score.created }}px;">{{ score.created }}</div> #}
 					<div class="int">{{ score.point }}</div>

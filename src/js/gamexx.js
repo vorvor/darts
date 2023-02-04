@@ -33,6 +33,7 @@
           this.winner = 0;
           this.gameId = 0;
           this.currentLeg = 1;
+          this.legNum = 2;
 
           this.switchScreenToGameplay();
         }
@@ -71,6 +72,7 @@
         }
 
         switchScreenToGameplay() {
+          $('#menu').hide();
           $('#players').hide();
           $('#leg-set').hide();
           $('#defaults').hide();
@@ -81,6 +83,10 @@
 
           $('#player-a-status .name').html(playerA.name);
           $('#player-b-status .name').html(playerB.name);
+        }
+
+        setLegNum(n) {
+          this.legNum = n;
         }
 
         switchScreenToFinish() {
@@ -118,6 +124,10 @@
             sum += this;
             playerBBlock.append('<div>' + this + '(' + (501 - sum) + ')</div>');
           })
+        }
+
+        setLegStartPlayer(player) {
+          this.legStartPlayer = player;
         }
 
         setCurrentPlayer(player) {
@@ -165,16 +175,12 @@
               Cookies.set('game', JSON.stringify(this));
             }
           }
-
-          console.log(this);
-
-          
           
         }
 
         gameRestart() {
 
-          if (this.currentPlayer.wonleg == 2) {
+          if (this.currentPlayer.wonleg == this.legNum) {
             this.setWinner(this.currentPlayer);
             this.switchScreenToFinish();
             Cookies.remove('game');
@@ -188,6 +194,11 @@
           this.playerB.sum = 0;
 
           this.currentLeg++;
+
+          if (this.currentPlayer.uid !== this.legStartPlayer.uid) {
+            this.changeCurrentPlayer();
+          }
+          this.changeLegStartPlayer();
         }
 
         setWinner(player) {
@@ -249,6 +260,15 @@
             this.setCurrentPlayer(this.playerB);
           } else {
             this.setCurrentPlayer(this.playerA);
+          }
+        }
+
+        changeLegStartPlayer() {
+          // Change to next player.
+          if (this.legStartPlayer === this.playerA) {
+            this.setLegStartPlayer(this.playerB);
+          } else {
+            this.setLegStartPlayer(this.playerA);
           }
         }
 
@@ -335,6 +355,8 @@
 
           game = new Game(playerA, playerB);
           game.setCurrentPlayer(playerA);
+          game.setLegStartPlayer(playerA);
+          game.setLegNum($('#leg-set select').val());
           console.log(game);
           
           test = new Test(game);
@@ -363,7 +385,13 @@
         })
 
         $('#send').click(function() {
-          game.addScore(parseInt($('#current').html()));
+          score = parseInt($('#current').html());
+
+          if (isNaN(score)) {
+            score = 0;
+          }
+
+          game.addScore(score);
           $('#current').html('');
         })
 

@@ -1,10 +1,22 @@
+{{ attach_library('darts/menu') }}
+
 <div id="menu">
-	<a href="/darts/game">GAME</a>
-	<a href="/darts/game/gamedata">TOURNAMENTS</a>
-	<a href="/darts">TRAINING</a>
-	<a href="/darts/stat/30">PERSONAL STATS</a>
-	<a href="/darts/generalstat">BEST OF</a>
-	<a href="/darts/where">VAKTESZT</a>
-	
-	<a href="/darts/drawform">SORSOLÁS</a>
+	<div class="menu-item">
+		<div class="menu-label">Training</div>
+		<div class="sub-menu hidden">
+			<div><a href="/darts">Personal training</a></div>
+			<div><a href="/darts/stat/30">Personal stats</a></div>
+			<div><a href="/darts/generalstat">Best of</a></div>
+			<div><a href="/darts/where">Vakteszt</a></div>
+		</div>
+	</div>
+	<div class="menu-item">
+		<div class="menu-label">Tournament</div>
+		<div class="sub-menu hidden">
+			<div><a href="/darts/game">Game</a></div>
+			<div><a href="/darts/drawform">Draw</a></div>
+			<div><a href="/darts/drawtable/0">Scoreboard</a></div>
+			<div><a href="/darts/game/gamedata">Tournaments</a></div>
+		</div>
+	</div>
 </div>

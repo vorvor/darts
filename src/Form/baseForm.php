@@ -25,7 +25,7 @@ class baseForm extends FormBase {
     $form['#attached']['library'][] = 'darts/chart';
 
     $players = [
-      2 => "Dióbél Ádám",
+      2 => "Seres Ádám",
       3 => "Földi András",
       4 => "Fury Bally",
       5 => "Balogh Sándor",
@@ -54,6 +54,8 @@ class baseForm extends FormBase {
       28 => "Pelle Tamas",
       29 => "Varga Dudás István",
       30 => "Vörös Borisz",
+      31 => "Török Gergő",
+      32 => "Petrovity Márkó",
       ];
 
       asort($players);
